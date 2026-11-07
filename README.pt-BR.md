@@ -126,10 +126,20 @@ vibe-forge/
 
 ## Extras recomendados (não instalados por padrão)
 
-- **vercel-labs/agent-skills** — performance de React/Next.js e auditoria de UI
-- **remotion-dev/skills** — se você gera vídeo com Remotion
+Instale só o que seu projeto usa. Rode na pasta do projeto (precisa do Node.js), reinicie o Claude Code e confira com `/skills`.
 
-Os comandos estão em `kit.json` → `recommended_gaps`.
+**Projetos Next.js** — performance de React/Next.js + auditoria de UI e acessibilidade (`vercel-labs/agent-skills`):
+```
+npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --agent claude-code
+npx skills add vercel-labs/agent-skills --skill web-design-guidelines --agent claude-code
+```
+
+**Vídeo com Remotion** (`remotion-dev/skills`):
+```
+npx skills add remotion-dev/skills --skill remotion-best-practices --agent claude-code
+```
+
+> Esses comandos vêm da documentação pública de cada projeto e ainda não foram testados com este kit.
 
 ## Créditos e observações
 
