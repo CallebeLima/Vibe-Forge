@@ -54,10 +54,10 @@ curl -fsSL https://raw.githubusercontent.com/CallebeLima/Vibe-Forge/main/scripts
 
 O instalador é **interativo**. Ele mostra uma lista de marcação em duas etapas e só instala depois que você confirmar:
 
-1. **Ferramentas principais** — já marcadas com o que a maioria dos projetos precisa. Cada item tem uma descrição curta (em inglês). Digite `m 3` para abrir a página do projeto do item 3 no navegador e ler mais.
-2. **Extras recomendados** — dependem do seu projeto. Marque as skills da Vercel se usa Next.js/React ou tem interface web, e a do Remotion só se faz vídeos com Remotion.
+1. **Ferramentas principais** — tudo que tem a tag `[recommended]` já vem marcado, e você pode desmarcar o que não quiser. Cada item tem uma descrição curta (em inglês).
+2. **Extras que dependem do seu projeto** — cada um tem uma tag dizendo quando ajuda (`if you use Next.js / React`, `if you have a web UI`, `if you use Remotion`). Nada vem marcado.
 
-Comandos: digite números para marcar/desmarcar (`1 3`), `a` = todos, `n` = nenhum, `m N` = saber mais, Enter = continuar.
+Comandos: **↑ / ↓** movem · **Enter** ou **Espaço** marca/desmarca o item destacado · **m** abre a página do projeto do item no navegador para você ler mais · `a` = todos, `n` = nenhum · escolha **Continue** (última linha) e aperte Enter para seguir.
 
 Quer pular as perguntas? Use `VIBE_FORGE_YES=1` para instalar os itens já marcados. Pré-marque opcionais com `WITH_SUPABASE=1`, `WITH_GRAPHIFY=1`, `WITH_NEXTJS=1`, `WITH_REMOTION=1` (PowerShell: `$env:NOME = "1"` · Mac/Linux: `export NOME=1`).
 

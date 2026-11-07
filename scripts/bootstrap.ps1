@@ -63,71 +63,106 @@ if ($missing) {
 $interactive = ($env:VIBE_FORGE_YES -ne "1")
 
 # ---------- catalog ----------
-function Item($id, $name, $kind, $sel, $desc, $url) {
-  [pscustomobject]@{ Id = $id; Name = $name; Kind = $kind; Sel = [bool]$sel; Desc = $desc; Url = $url }
+function Item($id, $name, $kind, $sel, $tag, $desc, $url) {
+  [pscustomobject]@{ Id = $id; Name = $name; Kind = $kind; Sel = [bool]$sel; Tag = $tag; Desc = $desc; Url = $url }
 }
 $core = @(
-  (Item "omc" "oh-my-claudecode" "plugin" $true "A team of AI specialists (architect, builder, designer, tester, security reviewer) plus a planning command." "https://github.com/Yeachan-Heo/oh-my-claudecode"),
-  (Item "frontend-design" "frontend-design" "skill" $true "Helps Claude make deliberate UI design choices instead of generic templates." "https://github.com/anthropics/skills/tree/main/skills/frontend-design"),
-  (Item "webapp-testing" "webapp-testing" "skill" $true "Lets Claude test your web app with Playwright: click, take screenshots, read logs." "https://github.com/anthropics/skills/tree/main/skills/webapp-testing"),
-  (Item "owasp-security" "owasp-security" "skill" $true "Security review against the OWASP standard, including risks of AI apps." "https://github.com/agamm/claude-code-owasp"),
-  (Item "chrome-devtools" "chrome-devtools-mcp" "plugin" $true "Lets Claude inspect your app in a real Chrome: console errors, network, performance." "https://github.com/ChromeDevTools/chrome-devtools-mcp"),
-  (Item "diagram-design" "diagram-design" "plugin" $true "Draws clean diagrams (architecture, flowcharts, sequences) as HTML/SVG." "https://github.com/cathrynlavery/diagram-design"),
-  (Item "vibe-forge" "vibe-forge" "plugin" $true "This kit: project rules, safe settings and agent routing (new-project-from-kit)." "https://github.com/CallebeLima/Vibe-Forge"),
-  (Item "supabase" "supabase + postgres skills" "skill" ($env:WITH_SUPABASE -eq "1") "Only if you use Supabase: auth, row-level security, migrations, Postgres best practices." "https://github.com/supabase/agent-skills"),
-  (Item "graphify" "graphify" "tool" ($env:WITH_GRAPHIFY -eq "1") "Maps your codebase into a knowledge graph. Needs Python 3.10+ and edits CLAUDE.md and settings.json." "https://github.com/Graphify-Labs/Graphify")
+  (Item "omc" "oh-my-claudecode" "plugin" $true "recommended" "A team of AI specialists (architect, builder, designer, tester, security reviewer) plus a planning command." "https://github.com/Yeachan-Heo/oh-my-claudecode"),
+  (Item "frontend-design" "frontend-design" "skill" $true "recommended" "Helps Claude make deliberate UI design choices instead of generic templates." "https://github.com/anthropics/skills/tree/main/skills/frontend-design"),
+  (Item "webapp-testing" "webapp-testing" "skill" $true "recommended" "Lets Claude test your web app with Playwright: click, take screenshots, read logs." "https://github.com/anthropics/skills/tree/main/skills/webapp-testing"),
+  (Item "owasp-security" "owasp-security" "skill" $true "recommended" "Security review against the OWASP standard, including risks of AI apps." "https://github.com/agamm/claude-code-owasp"),
+  (Item "chrome-devtools" "chrome-devtools-mcp" "plugin" $true "recommended" "Lets Claude inspect your app in a real Chrome: console errors, network, performance." "https://github.com/ChromeDevTools/chrome-devtools-mcp"),
+  (Item "diagram-design" "diagram-design" "plugin" $true "recommended" "Draws clean diagrams (architecture, flowcharts, sequences) as HTML/SVG." "https://github.com/cathrynlavery/diagram-design"),
+  (Item "vibe-forge" "vibe-forge" "plugin" $true "recommended" "This kit: project rules, safe settings and agent routing (new-project-from-kit)." "https://github.com/CallebeLima/Vibe-Forge"),
+  (Item "supabase" "supabase + postgres skills" "skill" ($env:WITH_SUPABASE -eq "1") "if you use Supabase" "Auth, row-level security, migrations, Postgres best practices." "https://github.com/supabase/agent-skills"),
+  (Item "graphify" "graphify" "tool" ($env:WITH_GRAPHIFY -eq "1") "optional" "Maps your codebase into a knowledge graph. Needs Python 3.10+ and edits CLAUDE.md and settings.json." "https://github.com/Graphify-Labs/Graphify")
 )
 $next = ($env:WITH_NEXTJS -eq "1")
 $extras = @(
-  (Item "vercel-react" "vercel-react-best-practices" "skill" $next "Pick this if your project uses Next.js or React: performance rules from Vercel's engineers." "https://github.com/vercel-labs/agent-skills"),
-  (Item "web-design" "web-design-guidelines" "skill" $next "Pick this if your project has a web interface: audits UI code for accessibility and design rules." "https://github.com/vercel-labs/agent-skills"),
-  (Item "remotion" "remotion-best-practices" "skill" ($env:WITH_REMOTION -eq "1") "Pick this only if you make videos with Remotion (videos built from React code)." "https://github.com/remotion-dev/skills")
+  (Item "vercel-react" "vercel-react-best-practices" "skill" $next "if you use Next.js / React" "Performance rules from Vercel's engineers for React and Next.js code." "https://github.com/vercel-labs/agent-skills"),
+  (Item "web-design" "web-design-guidelines" "skill" $next "if you have a web UI" "Audits UI code for accessibility and design rules." "https://github.com/vercel-labs/agent-skills"),
+  (Item "remotion" "remotion-best-practices" "skill" ($env:WITH_REMOTION -eq "1") "if you use Remotion" "Best practices for making videos from React code with Remotion." "https://github.com/remotion-dev/skills")
 )
 
+# Writes one padded line made of colored segments: @(@("text","Color"), ...)
+function Write-Segs($segs, $width) {
+  $len = 0
+  foreach ($s in $segs) {
+    $t = $s[0]
+    if ($len + $t.Length -gt $width) { $t = $t.Substring(0, [Math]::Max(0, $width - $len)) }
+    Write-Host $t -NoNewline -ForegroundColor $s[1]
+    $len += $t.Length
+  }
+  Write-Host (" " * [Math]::Max(0, $width - $len))
+}
+
+# Arrow-key menu: Up/Down move, Enter or Space toggles, "Continue" row goes on.
 function Show-Menu($title, $intro, $items) {
-  while ($true) {
-    Write-Host ""
-    Write-Host "== $title ==" -ForegroundColor Yellow
-    Write-Host $intro
-    Write-Host ""
-    for ($i = 0; $i -lt $items.Count; $i++) {
-      $mark = if ($items[$i].Sel) { "[x]" } else { "[ ]" }
-      $color = if ($items[$i].Sel) { "Green" } else { "Gray" }
-      Write-Host ("  {0} {1}  {2} ({3})" -f $mark, ($i + 1), $items[$i].Name, $items[$i].Kind) -ForegroundColor $color
-      Write-Host ("        {0}" -f $items[$i].Desc) -ForegroundColor DarkGray
-    }
-    Write-Host ""
-    Write-Host "  Toggle: type numbers (e.g. 1 3)   a = all   n = none   m 2 = read more about #2   Enter = continue"
-    $line = Read-Host "  >"
-    if ([string]::IsNullOrWhiteSpace($line)) { break }
-    $tok = @($line.Trim() -split "\s+")
-    switch -Regex ($tok[0]) {
-      "^[aA]$" { foreach ($it in $items) { $it.Sel = $true } }
-      "^[nN]$" { foreach ($it in $items) { $it.Sel = $false } }
-      "^[mM]$" {
-        $num = 0
-        if ($tok.Count -gt 1 -and [int]::TryParse($tok[1], [ref]$num) -and $num -ge 1 -and $num -le $items.Count) {
-          Write-Host "  Opening $($items[$num - 1].Url)"
-          try { Start-Process $items[$num - 1].Url } catch { Write-Host "  Could not open the browser. Open this link yourself: $($items[$num - 1].Url)" }
-        } else {
-          Write-Host "  Type m followed by an item number, e.g. m 2"
+  $n = $items.Count; $cur = 0; $note = ""
+  $h = 2 * $n + 9
+  $w = [Math]::Max(40, [Console]::WindowWidth - 1)
+  for ($k = 0; $k -lt $h; $k++) { Write-Host "" }
+  $top = [Math]::Max(0, [Console]::CursorTop - $h)
+  $oldCursor = $true
+  try { $oldCursor = [Console]::CursorVisible; [Console]::CursorVisible = $false } catch {}
+  try {
+    while ($true) {
+      [Console]::SetCursorPosition(0, $top)
+      Write-Segs @() $w
+      Write-Segs @(, @("== $title ==", "Yellow")) $w
+      Write-Segs @(, @($intro, "Gray")) $w
+      Write-Segs @() $w
+      for ($i = 0; $i -lt $n; $i++) {
+        $it = $items[$i]
+        $mark = if ($it.Sel) { "[x]" } else { "[ ]" }
+        $arrow = if ($i -eq $cur) { "  > " } else { "    " }
+        $nameColor = if ($it.Sel) { "Green" } else { "White" }
+        $tagColor = if ($it.Tag -eq "recommended") { "Green" } else { "Yellow" }
+        Write-Segs @(
+          @($arrow, "Cyan"),
+          @(("{0} {1}  {2} ({3})  " -f $mark, ($i + 1), $it.Name, $it.Kind), $nameColor),
+          @("[$($it.Tag)]", $tagColor)) $w
+        Write-Segs @(, @(("        " + $it.Desc), "DarkGray")) $w
+      }
+      Write-Segs @() $w
+      $contArrow = if ($cur -eq $n) { "  > " } else { "    " }
+      Write-Segs @(@($contArrow, "Cyan"), @("Continue", "White")) $w
+      Write-Segs @() $w
+      Write-Segs @(, @("  Arrows = move  Enter/Space = tick  m = more info  a = all  n = none", "DarkGray")) $w
+      Write-Segs @(, @(("  " + $note), "Yellow")) $w
+      $note = ""
+      $key = [Console]::ReadKey($true)
+      switch ($key.Key) {
+        "UpArrow"   { $cur = ($cur + $n) % ($n + 1) }
+        "DownArrow" { $cur = ($cur + 1) % ($n + 1) }
+        "Spacebar"  { if ($cur -lt $n) { $items[$cur].Sel = -not $items[$cur].Sel } }
+        "Enter"     { if ($cur -eq $n) { return } else { $items[$cur].Sel = -not $items[$cur].Sel } }
+        default {
+          switch -CaseSensitive ($key.KeyChar) {
+            { $_ -in "k" } { $cur = ($cur + $n) % ($n + 1) }
+            { $_ -in "j" } { $cur = ($cur + 1) % ($n + 1) }
+            { $_ -in "c", "C" } { return }
+            { $_ -in "a", "A" } { foreach ($x in $items) { $x.Sel = $true } }
+            { $_ -in "n", "N" } { foreach ($x in $items) { $x.Sel = $false } }
+            { $_ -in "m", "M" } {
+              if ($cur -lt $n) {
+                try { Start-Process $items[$cur].Url } catch {}
+                $note = "Opened $($items[$cur].Url)  (if nothing opened, copy this link)"
+              }
+            }
+          }
         }
       }
-      default {
-        foreach ($t in $tok) {
-          $n = 0
-          if ([int]::TryParse($t, [ref]$n) -and $n -ge 1 -and $n -le $items.Count) {
-            $items[$n - 1].Sel = -not $items[$n - 1].Sel
-          } else { Write-Host "  Ignored: $t" }
-        }
-      }
     }
+  } finally {
+    [Console]::SetCursorPosition(0, [Math]::Min($top + $h, [Console]::BufferHeight - 1))
+    try { [Console]::CursorVisible = $oldCursor } catch {}
   }
 }
 
 if ($interactive) {
-  Show-Menu "Step 1 of 2: choose what to install" "  Items marked [x] are recommended for most projects. Untick what you do not need." $core
-  Show-Menu "Step 2 of 2: recommended extras (depend on your project)" "  Not needed by every project. Tick only what matches what you are building." $extras
+  Show-Menu "Step 1 of 2: choose what to install" "  Items tagged [recommended] are ticked for you. Untick anything you do not want." $core
+  Show-Menu "Step 2 of 2: extras that depend on your project" "  Each tag says when it is useful. Tick only what matches what you are building." $extras
 }
 $picked = @($core + $extras | Where-Object { $_.Sel })
 

@@ -54,10 +54,10 @@ curl -fsSL https://raw.githubusercontent.com/CallebeLima/Vibe-Forge/main/scripts
 
 The installer is **interactive**. It shows a checklist in two steps and installs only after you confirm:
 
-1. **Core tools** — pre-ticked with what most projects need. Each item has a short description (in English). Type `m 3` to open item 3's project page in your browser and read more.
-2. **Recommended extras** — depend on your project. Tick the Vercel skills if you use Next.js/React or have a web interface, and the Remotion skill only if you make videos with Remotion.
+1. **Core tools** — everything marked `[recommended]` comes already ticked, and you can untick anything you don't want. Each item has a short description (in English).
+2. **Extras that depend on your project** — each has a tag saying when it helps (`if you use Next.js / React`, `if you have a web UI`, `if you use Remotion`). Nothing is ticked by default.
 
-Controls: type numbers to tick/untick (`1 3`), `a` = all, `n` = none, `m N` = read more, Enter = continue.
+Controls: **↑ / ↓** move · **Enter** or **Space** ticks/unticks the highlighted item · **m** opens that item's project page in your browser so you can read more · `a` = all, `n` = none · choose **Continue** (last row) and press Enter to go on.
 
 Want to skip the questions? Set `VIBE_FORGE_YES=1` to install the pre-ticked items. Pre-tick optional ones with `WITH_SUPABASE=1`, `WITH_GRAPHIFY=1`, `WITH_NEXTJS=1`, `WITH_REMOTION=1` (PowerShell: `$env:NAME = "1"` · Mac/Linux: `export NAME=1`).
 

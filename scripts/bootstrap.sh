@@ -87,30 +87,37 @@ if [ "${VIBE_FORGE_YES:-0}" != "1" ]; then
   fi
 fi
 
-# ---------- catalog: id|name|kind|preselected|description|more-link ----------
+# ---------- colors ----------
+if [ -z "${NO_COLOR:-}" ]; then
+  C_G=$'\033[32m'; C_Y=$'\033[33m'; C_C=$'\033[36m'; C_D=$'\033[90m'; C_B=$'\033[1m'; C_0=$'\033[0m'
+else
+  C_G=""; C_Y=""; C_C=""; C_D=""; C_B=""; C_0=""
+fi
+
+# ---------- catalog: id|name|kind|preselected|tag|description|more-link ----------
 CORE=(
-"omc|oh-my-claudecode|plugin|1|A team of AI specialists (architect, builder, designer, tester, security reviewer) plus a planning command.|https://github.com/Yeachan-Heo/oh-my-claudecode"
-"frontend-design|frontend-design|skill|1|Helps Claude make deliberate UI design choices instead of generic templates.|https://github.com/anthropics/skills/tree/main/skills/frontend-design"
-"webapp-testing|webapp-testing|skill|1|Lets Claude test your web app with Playwright: click, take screenshots, read logs.|https://github.com/anthropics/skills/tree/main/skills/webapp-testing"
-"owasp-security|owasp-security|skill|1|Security review against the OWASP standard, including risks of AI apps.|https://github.com/agamm/claude-code-owasp"
-"chrome-devtools|chrome-devtools-mcp|plugin|1|Lets Claude inspect your app in a real Chrome: console errors, network, performance.|https://github.com/ChromeDevTools/chrome-devtools-mcp"
-"diagram-design|diagram-design|plugin|1|Draws clean diagrams (architecture, flowcharts, sequences) as HTML/SVG.|https://github.com/cathrynlavery/diagram-design"
-"vibe-forge|vibe-forge|plugin|1|This kit: project rules, safe settings and agent routing (new-project-from-kit).|https://github.com/CallebeLima/Vibe-Forge"
-"supabase|supabase + postgres skills|skill|0|Only if you use Supabase: auth, row-level security, migrations, Postgres best practices.|https://github.com/supabase/agent-skills"
-"graphify|graphify|tool|0|Maps your codebase into a knowledge graph. Needs Python 3.10+ and edits CLAUDE.md and settings.json.|https://github.com/Graphify-Labs/Graphify"
+"omc|oh-my-claudecode|plugin|1|recommended|A team of AI specialists (architect, builder, designer, tester, security reviewer) plus a planning command.|https://github.com/Yeachan-Heo/oh-my-claudecode"
+"frontend-design|frontend-design|skill|1|recommended|Helps Claude make deliberate UI design choices instead of generic templates.|https://github.com/anthropics/skills/tree/main/skills/frontend-design"
+"webapp-testing|webapp-testing|skill|1|recommended|Lets Claude test your web app with Playwright: click, take screenshots, read logs.|https://github.com/anthropics/skills/tree/main/skills/webapp-testing"
+"owasp-security|owasp-security|skill|1|recommended|Security review against the OWASP standard, including risks of AI apps.|https://github.com/agamm/claude-code-owasp"
+"chrome-devtools|chrome-devtools-mcp|plugin|1|recommended|Lets Claude inspect your app in a real Chrome: console errors, network, performance.|https://github.com/ChromeDevTools/chrome-devtools-mcp"
+"diagram-design|diagram-design|plugin|1|recommended|Draws clean diagrams (architecture, flowcharts, sequences) as HTML/SVG.|https://github.com/cathrynlavery/diagram-design"
+"vibe-forge|vibe-forge|plugin|1|recommended|This kit: project rules, safe settings and agent routing (new-project-from-kit).|https://github.com/CallebeLima/Vibe-Forge"
+"supabase|supabase + postgres skills|skill|0|if you use Supabase|Auth, row-level security, migrations, Postgres best practices.|https://github.com/supabase/agent-skills"
+"graphify|graphify|tool|0|optional|Maps your codebase into a knowledge graph. Needs Python 3.10+ and edits CLAUDE.md and settings.json.|https://github.com/Graphify-Labs/Graphify"
 )
 EXTRAS=(
-"vercel-react|vercel-react-best-practices|skill|0|Pick this if your project uses Next.js or React: performance rules from Vercel's engineers.|https://github.com/vercel-labs/agent-skills"
-"web-design|web-design-guidelines|skill|0|Pick this if your project has a web interface: audits UI code for accessibility and design rules.|https://github.com/vercel-labs/agent-skills"
-"remotion|remotion-best-practices|skill|0|Pick this only if you make videos with Remotion (videos built from React code).|https://github.com/remotion-dev/skills"
+"vercel-react|vercel-react-best-practices|skill|0|if you use Next.js / React|Performance rules from Vercel's engineers for React and Next.js code.|https://github.com/vercel-labs/agent-skills"
+"web-design|web-design-guidelines|skill|0|if you have a web UI|Audits UI code for accessibility and design rules.|https://github.com/vercel-labs/agent-skills"
+"remotion|remotion-best-practices|skill|0|if you use Remotion|Best practices for making videos from React code with Remotion.|https://github.com/remotion-dev/skills"
 )
 
 load_menu() {
-  M_ID=(); M_NAME=(); M_KIND=(); M_SEL=(); M_DESC=(); M_URL=()
-  local entry a b c d e f
+  M_ID=(); M_NAME=(); M_KIND=(); M_SEL=(); M_TAG=(); M_DESC=(); M_URL=()
+  local entry a b c d e f g
   for entry in "$@"; do
-    IFS='|' read -r a b c d e f <<< "$entry"
-    M_ID+=("$a"); M_NAME+=("$b"); M_KIND+=("$c"); M_SEL+=("$d"); M_DESC+=("$e"); M_URL+=("$f")
+    IFS='|' read -r a b c d e f g <<< "$entry"
+    M_ID+=("$a"); M_NAME+=("$b"); M_KIND+=("$c"); M_SEL+=("$d"); M_TAG+=("$e"); M_DESC+=("$f"); M_URL+=("$g")
   done
 }
 
@@ -128,56 +135,64 @@ preselect() {
 }
 
 open_url() {
-  echo "  Opening $1"
   case "$(uname -s)" in
     Darwin)               open "$1" >/dev/null 2>&1 ;;
     MINGW*|MSYS*|CYGWIN*) start "" "$1" >/dev/null 2>&1 ;;
     *)                    xdg-open "$1" >/dev/null 2>&1 ;;
   esac
-  if [ $? -ne 0 ]; then echo "  Could not open the browser. Open this link yourself: $1"; fi
 }
 
+trunc() { # text max
+  if [ "${#1}" -gt "$2" ]; then printf '%s...' "${1:0:$(($2 - 3))}"; else printf '%s' "$1"; fi
+}
+
+# Arrow-key menu. Up/Down move, Enter or Space toggles, "Continue" row (or c) goes on.
 run_menu() {
-  local title="$1" intro="$2" n=${#M_ID[@]} i mark line tok num
+  local title="$1" intro="$2" n=${#M_ID[@]} cur=0 first=1 note="" i key k2 mark tagc cols
+  local height=$((2 * n + 9))
+  cols=$(tput cols 2>/dev/null || echo 80); [ "$cols" -lt 40 ] && cols=80
+  printf '\033[?25l'
+  trap 'printf "\033[?25h"' EXIT
   while true; do
-    echo ""
-    echo "== $title =="
-    echo "$intro"
-    echo ""
+    if [ "$first" = 0 ]; then printf '\033[%dA\033[J' "$height"; fi
+    first=0
+    printf '\n%s== %s ==%s\n%s\n\n' "$C_Y" "$title" "$C_0" "$intro"
     for ((i = 0; i < n; i++)); do
-      mark="[ ]"
-      if [ "${M_SEL[$i]}" = 1 ]; then mark="[x]"; fi
-      printf '  %s %d  %s (%s)\n' "$mark" "$((i + 1))" "${M_NAME[$i]}" "${M_KIND[$i]}"
-      printf '        %s\n' "${M_DESC[$i]}"
+      mark="[ ]"; if [ "${M_SEL[$i]}" = 1 ]; then mark="[x]"; fi
+      tagc="$C_Y"; if [ "${M_TAG[$i]}" = recommended ]; then tagc="$C_G"; fi
+      if [ "$i" = "$cur" ]; then
+        printf '  %s>%s %s%s %d  %s%s (%s)%s  %s[%s]%s\n' "$C_C" "$C_0" "$C_B" "$mark" "$((i + 1))" "${M_NAME[$i]}" "$C_0" "${M_KIND[$i]}" "" "$tagc" "${M_TAG[$i]}" "$C_0"
+      else
+        printf '    %s %d  %s (%s)  %s[%s]%s\n' "$mark" "$((i + 1))" "${M_NAME[$i]}" "${M_KIND[$i]}" "$tagc" "${M_TAG[$i]}" "$C_0"
+      fi
+      printf '        %s%s%s\n' "$C_D" "$(trunc "${M_DESC[$i]}" $((cols - 10)))" "$C_0"
     done
     echo ""
-    echo "  Toggle: type numbers (e.g. 1 3)   a = all   n = none   m 2 = read more about #2   Enter = continue"
-    printf '  > '
-    IFS= read -r -u 3 line || line=""
-    if [ -z "$line" ]; then break; fi
-    set -f; set -- $line; set +f
-    case "$1" in
+    if [ "$cur" = "$n" ]; then printf '  %s> %sContinue%s\n' "$C_C" "$C_B" "$C_0"; else printf '    Continue\n'; fi
+    echo ""
+    printf '  %s%s%s\n' "$C_D" "$(trunc "Arrows = move  Enter/Space = tick  m = more info  a = all  n = none" $((cols - 4)))" "$C_0"
+    printf '  %s%s%s\n' "$C_Y" "$(trunc "$note" $((cols - 4)))" "$C_0"
+    note=""
+    IFS= read -rsn1 -u 3 key || key=""
+    if [ "$key" = $'\033' ]; then read -rsn2 -t 1 -u 3 k2 || k2=""; key="$key$k2"; fi
+    case "$key" in
+      $'\033[A'|k) cur=$(( (cur + n) % (n + 1) )) ;;
+      $'\033[B'|j) cur=$(( (cur + 1) % (n + 1) )) ;;
+      ''|' ')
+        if [ "$cur" = "$n" ]; then
+          if [ -z "$key" ]; then break; fi
+        elif [ "${M_SEL[$cur]}" = 1 ]; then M_SEL[$cur]=0; else M_SEL[$cur]=1; fi ;;
+      c|C) break ;;
       a|A) for ((i = 0; i < n; i++)); do M_SEL[$i]=1; done ;;
       n|N) for ((i = 0; i < n; i++)); do M_SEL[$i]=0; done ;;
       m|M)
-        num="${2:-}"
-        if [[ "$num" =~ ^[0-9]+$ ]] && [ "$num" -ge 1 ] && [ "$num" -le "$n" ]; then
-          open_url "${M_URL[$((num - 1))]}"
-        else
-          echo "  Type m followed by an item number, e.g. m 2"
-        fi
-        ;;
-      *)
-        for tok in "$@"; do
-          if [[ "$tok" =~ ^[0-9]+$ ]] && [ "$tok" -ge 1 ] && [ "$tok" -le "$n" ]; then
-            if [ "${M_SEL[$((tok - 1))]}" = 1 ]; then M_SEL[$((tok - 1))]=0; else M_SEL[$((tok - 1))]=1; fi
-          else
-            echo "  Ignored: $tok"
-          fi
-        done
-        ;;
+        if [ "$cur" -lt "$n" ]; then
+          open_url "${M_URL[$cur]}"
+          note="Opened ${M_URL[$cur]}  (if nothing opened, copy this link)"
+        fi ;;
     esac
   done
+  printf '\033[?25h'
 }
 
 PICKED=()
@@ -191,14 +206,14 @@ collect() {
 # ---------- step 1: core ----------
 load_menu "${CORE[@]}"; preselect
 if [ "$INTERACTIVE" = 1 ]; then
-  run_menu "Step 1 of 2: choose what to install" "  Items marked [x] are recommended for most projects. Untick what you do not need."
+  run_menu "Step 1 of 2: choose what to install" "  Items tagged [recommended] are ticked for you. Untick anything you do not want."
 fi
 collect
 
 # ---------- step 2: recommended extras ----------
 load_menu "${EXTRAS[@]}"; preselect
 if [ "$INTERACTIVE" = 1 ]; then
-  run_menu "Step 2 of 2: recommended extras (depend on your project)" "  Not needed by every project. Tick only what matches what you are building."
+  run_menu "Step 2 of 2: extras that depend on your project" "  Each tag says when it is useful. Tick only what matches what you are building."
 fi
 collect
 
