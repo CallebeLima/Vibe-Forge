@@ -4,6 +4,11 @@
 # Pre-select optional items: WITH_SUPABASE, WITH_GRAPHIFY, WITH_NEXTJS, WITH_REMOTION = "1"
 $ErrorActionPreference = "Continue"
 
+# Show UTF-8 output from claude/npx correctly (otherwise symbols turn into garbled characters on Windows)
+$vfOldEnc = [Console]::OutputEncoding
+try { [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; $OutputEncoding = [System.Text.Encoding]::UTF8 } catch {}
+function Restore-Enc { try { [Console]::OutputEncoding = $vfOldEnc } catch {} }
+
 # Big repositories (e.g. diagram-design) can exceed the default 120s git timeout
 if (-not $env:CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS) { $env:CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS = "300000" }
 
@@ -57,6 +62,7 @@ foreach ($req in @(
 if ($missing) {
   Write-Host ""
   Write-Host "  Install the items above, open a new terminal and run this again."
+  Restore-Enc
   return
 }
 
@@ -170,6 +176,7 @@ $picked = @($core + $extras | Where-Object { $_.Sel })
 if ($picked.Count -eq 0) {
   Write-Host ""
   Write-Host "  Nothing selected. Nothing was installed."
+  Restore-Enc
   return
 }
 Write-Host ""
@@ -246,3 +253,4 @@ Write-Host ""
 Write-Host "  Next: restart Claude Code in this folder, then ask:"
 Write-Host "    Use new-project-from-kit to set up this project"
 Write-Host ""
+Restore-Enc
