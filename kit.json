@@ -17,7 +17,6 @@
     { "name": "graphify", "version": "0.9.103", "license": "desconhecida", "note": "não está no skills-lock.json; confirmar origem e licença antes de redistribuir" }
   ],
   "recommended_gaps": [
-    { "name": "superpowers", "type": "plugin", "marketplace": "obra/superpowers-marketplace", "why": "TDD, debugging sistemático, code review", "install": "claude plugin marketplace add obra/superpowers-marketplace && claude plugin install superpowers@superpowers-marketplace" },
     { "name": "react-best-practices + web-design-guidelines", "type": "skill", "source": "vercel-labs/agent-skills", "why": "Next.js e auditoria de UI/acessibilidade", "install": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --agent claude-code" },
     { "name": "remotion-best-practices", "type": "skill", "source": "remotion-dev/skills", "why": "só se gerar vídeo com Remotion", "optional": true, "install": "npx skills add remotion-dev/skills --skill remotion-best-practices --agent claude-code" },
     { "name": "context7", "type": "mcp", "why": "documentação atual de Next 16, FastAPI etc.", "note": "confirmar comando de instalação na documentação oficial" },

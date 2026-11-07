@@ -126,7 +126,6 @@ vibe-forge/
 
 ## Extras recomendados (não instalados por padrão)
 
-- **superpowers** — código test-first, debugging sistemático, code review
 - **vercel-labs/agent-skills** — performance de React/Next.js e auditoria de UI
 - **remotion-dev/skills** — se você gera vídeo com Remotion
 
