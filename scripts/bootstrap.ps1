@@ -15,11 +15,8 @@ if ($env:WITH_SUPABASE -eq "1") {
 Write-Host "== Plugins =="
 claude plugin marketplace add ChromeDevTools/chrome-devtools-mcp
 claude plugin install chrome-devtools-mcp@chrome-devtools-plugins
-if ($env:OMC_MARKETPLACE_REPO) {
-  claude plugin marketplace add $env:OMC_MARKETPLACE_REPO
-  claude plugin install oh-my-claudecode@omc
-} else {
-  Write-Host "AVISO: defina OMC_MARKETPLACE_REPO (owner/repo do marketplace 'omc') para instalar o oh-my-claudecode."
-}
+$omc = if ($env:OMC_MARKETPLACE_REPO) { $env:OMC_MARKETPLACE_REPO } else { "Yeachan-Heo/oh-my-claudecode" }
+claude plugin marketplace add $omc
+claude plugin install oh-my-claudecode@omc
 
 Write-Host "Pronto. Rode /skills e /plugin no Claude Code para conferir."

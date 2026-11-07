@@ -13,11 +13,10 @@ Base reutilizável extraída do projeto Hachi para iniciar novos projetos (API P
 
 ## Instalar skills/plugins ANTES de usar
 Skills: `frontend-design`, `webapp-testing`, `owasp-security` (+ `supabase`, `supabase-postgres-best-practices` com `WITH_SUPABASE=1`).
-Plugins: `chrome-devtools-mcp`, `oh-my-claudecode` (defina `OMC_MARKETPLACE_REPO`).
+Plugins: `chrome-devtools-mcp`, `oh-my-claudecode` (marketplace `omc` = `Yeachan-Heo/oh-my-claudecode`, sobrescrevível com `OMC_MARKETPLACE_REPO`).
 
 ```powershell
 # Windows, na raiz do projeto novo
-$env:OMC_MARKETPLACE_REPO = "owner/repo-do-marketplace-omc"
 .\scripts\bootstrap.ps1
 ```
 
@@ -32,5 +31,4 @@ Cada uma tem dono, licença e atualizações próprias. O kit guarda só a orige
 
 ## Pendências
 - `diagram-design` (MIT, v2.6) e `graphify` (v0.9.103) estavam instaladas no Hachi sem origem registrada no `skills-lock.json`. Informe a origem em `kit.json`.
-- Repositório do marketplace `omc` precisa ser preenchido.
 - `frontend-design` existe como skill e como plugin no Hachi; mantenha só um.

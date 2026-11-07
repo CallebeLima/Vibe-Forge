@@ -8,7 +8,7 @@
     { "name": "supabase-postgres-best-practices", "source": "supabase/agent-skills", "optional": true, "install": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --agent claude-code" }
   ],
   "plugins": [
-    { "name": "oh-my-claudecode", "marketplace": "omc", "marketplaceSource": "PREENCHER: repo do marketplace omc (ver ~/.claude/plugins/known_marketplaces.json)", "install": "claude plugin install oh-my-claudecode@omc" },
+    { "name": "oh-my-claudecode", "marketplace": "omc", "marketplaceSource": "Yeachan-Heo/oh-my-claudecode", "install": "claude plugin install oh-my-claudecode@omc" },
     { "name": "chrome-devtools-mcp", "marketplace": "chrome-devtools-plugins", "marketplaceSource": "ChromeDevTools/chrome-devtools-mcp", "install": "claude plugin install chrome-devtools-mcp@chrome-devtools-plugins" },
     { "name": "frontend-design", "marketplace": "claude-plugins-official", "note": "duplica a skill frontend-design; manter só um dos dois", "install": "claude plugin install frontend-design@claude-plugins-official" }
   ],

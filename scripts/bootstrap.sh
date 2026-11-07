@@ -16,11 +16,7 @@ fi
 echo "== Plugins =="
 claude plugin marketplace add ChromeDevTools/chrome-devtools-mcp
 claude plugin install chrome-devtools-mcp@chrome-devtools-plugins
-if [ -n "${OMC_MARKETPLACE_REPO:-}" ]; then
-  claude plugin marketplace add "$OMC_MARKETPLACE_REPO"
-  claude plugin install oh-my-claudecode@omc
-else
-  echo "AVISO: defina OMC_MARKETPLACE_REPO (owner/repo do marketplace 'omc') para instalar o oh-my-claudecode."
-fi
+claude plugin marketplace add "${OMC_MARKETPLACE_REPO:-Yeachan-Heo/oh-my-claudecode}"
+claude plugin install oh-my-claudecode@omc
 
 echo "Pronto. Rode /skills e /plugin no Claude Code para conferir."
