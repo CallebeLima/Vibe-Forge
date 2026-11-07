@@ -36,50 +36,50 @@ node --version
 git --version
 ```
 
-## Install (easy way, 3 steps)
+## Install (2 steps)
 
-### Step 1 — Get the kit
+### Step 1 — Open a terminal in YOUR project folder and run the installer
 
-```
-git clone https://github.com/CallebeLima/vibe-forge.git
-```
-
-### Step 2 — Open a terminal in YOUR project folder and run the installer
+No project yet? Create an empty folder, then open the terminal inside it.
 
 **Windows (PowerShell):**
 ```powershell
-cd C:\path\to\your-project
-& C:\path\to\vibe-forge\scripts\bootstrap.ps1
+irm https://raw.githubusercontent.com/CallebeLima/Vibe-Forge/main/scripts/bootstrap.ps1 | iex
 ```
 
 **Mac / Linux:**
 ```bash
-cd /path/to/your-project
-bash /path/to/vibe-forge/scripts/bootstrap.sh
+curl -fsSL https://raw.githubusercontent.com/CallebeLima/Vibe-Forge/main/scripts/bootstrap.sh | bash
 ```
 
-Using Supabase? Add it first:
+Using Supabase? Run this **before** the command above:
 - PowerShell: `$env:WITH_SUPABASE = "1"`
 - Mac/Linux: `export WITH_SUPABASE=1`
 
 **What gets installed:**
 - Skills: `frontend-design`, `webapp-testing`, `owasp-security` (+ `supabase`, `supabase-postgres-best-practices` if enabled)
-- Plugins: `oh-my-claudecode` (the agents) and `chrome-devtools-mcp` (lets Claude test your app in a real browser)
+- Plugins: `oh-my-claudecode` (the agents), `chrome-devtools-mcp` (lets Claude test your app in a real browser) and `vibe-forge` (this kit)
 
-### Step 3 — Add the Vibe Forge plugin and create your project base
+<details>
+<summary>🔍 Want to read the script before running it? (recommended)</summary>
 
-Open Claude Code in your project and run:
+Running a script straight from the internet means trusting who published it. Read it first:
+[bootstrap.ps1](scripts/bootstrap.ps1) · [bootstrap.sh](scripts/bootstrap.sh). They only run the install commands listed above.
 
-```
-/plugin marketplace add CallebeLima/vibe-forge
-/plugin install vibe-forge@vibe-forge
-```
+Prefer not to run it from the web? Clone the kit **outside** your project (for example `C:\tools\vibe-forge`), then, from inside your project folder, run `& C:\tools\vibe-forge\scripts\bootstrap.ps1` (or `bash /path/to/vibe-forge/scripts/bootstrap.sh`).
+</details>
 
-Then just ask Claude:
+### Step 2 — Open Claude Code in the same folder and ask it to set up the project
 
 > "Use new-project-from-kit to set up this project"
 
-It will ask a few questions, then copy the rules (`CLAUDE.md`), the safe settings and the `.gitignore` for you.
+Claude asks what you are building, picks the right template and copies the project rules (`CLAUDE.md`), the safe settings and the `.gitignore`:
+
+| If your project is... | Template |
+|---|---|
+| Python/FastAPI API + Next.js | `python-nextjs` |
+| Vite + React + TypeScript | `vite-react` |
+| Anything else / not sure | `minimal` |
 
 ## Check that it worked
 

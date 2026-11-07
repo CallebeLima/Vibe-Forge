@@ -19,4 +19,7 @@ $omc = if ($env:OMC_MARKETPLACE_REPO) { $env:OMC_MARKETPLACE_REPO } else { "Yeac
 claude plugin marketplace add $omc
 claude plugin install oh-my-claudecode@omc
 
+claude plugin marketplace add CallebeLima/Vibe-Forge
+claude plugin install vibe-forge@vibe-forge
+
 Write-Host "Pronto. Rode /skills e /plugin no Claude Code para conferir."

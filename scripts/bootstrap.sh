@@ -19,4 +19,7 @@ claude plugin install chrome-devtools-mcp@chrome-devtools-plugins
 claude plugin marketplace add "${OMC_MARKETPLACE_REPO:-Yeachan-Heo/oh-my-claudecode}"
 claude plugin install oh-my-claudecode@omc
 
+claude plugin marketplace add CallebeLima/Vibe-Forge
+claude plugin install vibe-forge@vibe-forge
+
 echo "Pronto. Rode /skills e /plugin no Claude Code para conferir."
