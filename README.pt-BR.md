@@ -95,6 +95,8 @@ No Claude Code:
 
 ## O que cada peça faz (clique para expandir)
 
+Tudo que o instalador oferece na etapa 1 está explicado abaixo. Os extras da etapa 2 têm uma seção própria: [Extras recomendados](#-extras-recomendados-escolha-pelo-tipo-de-projeto).
+
 <details>
 <summary><b>🧠 oh-my-claudecode (OMC)</b> — o time de IA</summary>
 
@@ -217,15 +219,36 @@ vibe-forge/
 └── .claude-plugin/       → torna este repositório instalável como marketplace
 ```
 
-## Extras recomendados (etapa 2 do instalador)
+## ⭐ Extras recomendados (escolha pelo tipo de projeto)
 
-O instalador pergunta sobre estes depois das ferramentas principais, porque só fazem sentido em alguns projetos:
+Estes **não** servem para todo projeto, então o instalador pergunta sobre eles numa etapa própria (etapa 2 de 2) e deixa **desmarcados**. Abra o que combina com o que você está construindo. Cada um tem um link **Read more** para a página do autor.
 
-| Extra | Marque se… |
-|---|---|
-| `vercel-react-best-practices` | seu projeto usa **Next.js ou React** (regras de performance da Vercel) |
-| `web-design-guidelines` | seu projeto tem **interface web** (audita acessibilidade e design) |
-| `remotion-best-practices` | você faz **vídeos com Remotion** |
+<details>
+<summary><b>⚛️ vercel-react-best-practices</b> — marque se seu projeto usa <b>Next.js ou React</b></summary>
+
+**O que é:** uma skill com regras de performance escritas pelos engenheiros da Vercel (a empresa por trás do Next.js).
+**Por que usar:** o Claude conhece React, mas muitas vezes escreve código que funciona e é lento (re-renderizações à toa, pacotes grandes, páginas lentas). Com esta skill ele aplica as correções conhecidas enquanto escreve seus componentes.
+**Pule se:** seu projeto não é React/Next.js (HTML puro, só Python etc.).
+[Read more →](https://github.com/vercel-labs/agent-skills)
+</details>
+
+<details>
+<summary><b>🧭 web-design-guidelines</b> — marque se seu projeto tem <b>interface web</b></summary>
+
+**O que é:** uma skill que revisa o código da sua interface contra um checklist de design e acessibilidade (contraste, uso pelo teclado, rótulos, espaçamento...).
+**Por que usar:** depois que o Claude monta uma tela, peça "revise minha UI" e ele aponta onde um usuário de verdade tropeçaria. Combina com a `frontend-design`: uma deixa bonito, esta confere se é usável.
+**Pule se:** seu projeto não tem telas (só CLI ou API).
+[Read more →](https://github.com/vercel-labs/agent-skills)
+</details>
+
+<details>
+<summary><b>🎬 remotion-best-practices</b> — marque só se você faz <b>vídeos com Remotion</b></summary>
+
+**O que é:** uma skill que ensina o Claude como o Remotion funciona. O Remotion permite criar vídeos com código React em vez de um editor de vídeo.
+**Por que usar:** sem ela o Claude tende a chutar as regras do Remotion (animações, tempo, renderização) e errar. Com ela, os vídeos saem certos nas primeiras tentativas.
+**Pule se:** você não usa Remotion. Não serve para sites comuns.
+[Read more →](https://github.com/remotion-dev/skills)
+</details>
 
 Prefere instalar na mão? Rode na pasta do projeto, reinicie o Claude Code e confira com `/skills`:
 ```
@@ -239,7 +262,7 @@ npx skills add remotion-dev/skills --skill remotion-best-practices --agent claud
 ## Créditos e observações
 
 As skills de terceiros **não** são copiadas aqui; o instalador baixa a versão atual dos autores:
-`anthropics/skills`, `agamm/claude-code-owasp`, `supabase/agent-skills`, `ChromeDevTools/chrome-devtools-mcp`, `Yeachan-Heo/oh-my-claudecode`.
+`anthropics/skills`, `agamm/claude-code-owasp`, `supabase/agent-skills`, `ChromeDevTools/chrome-devtools-mcp`, `Yeachan-Heo/oh-my-claudecode`, `cathrynlavery/diagram-design`, `vercel-labs/agent-skills`, `remotion-dev/skills`, `graphifyy` (PyPI).
 
 ## Licença
 
