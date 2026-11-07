@@ -198,6 +198,7 @@ O `settings.json` de cada template impede o Claude de ler ou editar seu `.env` (
 | PowerShell bloqueia o script | Rode `Set-ExecutionPolicy -Scope Process Bypass` e tente de novo |
 | Plugin não aparece | Reinicie o Claude Code e rode `/plugin` |
 | Falta alguma skill | Rode manualmente a linha dela no `kit.json` |
+| `Git clone timed out after 120s` ou `EBUSY ... .clone` (geralmente no `diagram-design`) | 1) Apague a pasta que sobrou em `%USERPROFILE%\.claude\plugins\marketplaces\<nome>..clone` (feche o VS Code e outros terminais antes). 2) Aumente o tempo limite: PowerShell `$env:CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS = "300000"` · Mac/Linux `export CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS=300000`. 3) Rode o instalador de novo |
 
 ## O que tem dentro
 

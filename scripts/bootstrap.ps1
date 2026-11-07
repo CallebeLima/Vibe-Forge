@@ -3,6 +3,9 @@
 # supabase*, e plugins: oh-my-claudecode, chrome-devtools-mcp).
 $ErrorActionPreference = "Stop"
 
+# Repositórios grandes (ex.: diagram-design) podem passar do timeout padrão de 120s
+if (-not $env:CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS) { $env:CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS = "300000" }
+
 Write-Host "== Skills =="
 npx skills add anthropics/skills --skill frontend-design --agent claude-code
 npx skills add anthropics/skills --skill webapp-testing --agent claude-code
@@ -20,7 +23,8 @@ claude plugin marketplace add $omc
 claude plugin install oh-my-claudecode@omc
 
 claude plugin marketplace add cathrynlavery/diagram-design
-claude plugin install diagram-design@diagram-design
+if ($LASTEXITCODE -eq 0) { claude plugin install diagram-design@diagram-design }
+if ($LASTEXITCODE -ne 0) { Write-Host "AVISO: diagram-design não foi instalado (veja 'Problemas comuns' no README). Seguindo com o resto." }
 
 if ($env:WITH_GRAPHIFY -eq "1") {
   Write-Host "== Graphify (precisa de Python 3.10+) =="
