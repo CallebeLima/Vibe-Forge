@@ -143,7 +143,17 @@ Skills para projetos que usam Supabase: login/autenticação, segurança por lin
 </details>
 
 <details>
-<summary><b>📄 Templates</b> — o que é copiado para o seu projeto</summary>
+<summary><b>📄 Templates</b> — o que é copiado para o seu projeto (3 variantes)</summary>
+
+A skill `new-project-from-kit` escolhe uma para você:
+
+| Variante | Para |
+|---|---|
+| `python-nextjs` | API Python/FastAPI + frontend Next.js |
+| `vite-react` | Frontend Vite + React + TypeScript |
+| `minimal` | qualquer outra stack (regras genéricas) |
+
+Cada uma contém:
 
 - `CLAUDE.md` — regras do projeto: arquitetura, "responder de forma concisa", "perguntar antes de mudar mais de 3 arquivos"
 - `settings.json` — bloqueia leitura/edição de `.env`, `workspace/`, `.venv/`; pede confirmação antes de `git push`, `rm` e instalações
@@ -166,7 +176,7 @@ Skills para projetos que usam Supabase: login/autenticação, segurança por lin
 
 ## Segurança já incluída
 
-O `templates/settings.json` impede o Claude de ler ou editar seu `.env`, `workspace/` e `.venv/`, e pede confirmação antes de `git push`, `rm` e instalações. Seus segredos continuam seus.
+O `settings.json` de cada template impede o Claude de ler ou editar seu `.env` (a variante Python também bloqueia `workspace/` e `.venv/`), e pede confirmação antes de `git push`, `rm` e instalações. Seus segredos continuam seus.
 
 ## Problemas comuns
 
@@ -182,7 +192,7 @@ O `templates/settings.json` impede o Claude de ler ou editar seu `.env`, `worksp
 ```
 vibe-forge/
 ├── plugins/vibe-forge/   → o plugin (skills + /vibe-forge:bootstrap)
-├── templates/            → CLAUDE.md, settings.json, .gitignore, exemplo de hook
+├── templates/            → 3 variantes: python-nextjs, vite-react, minimal
 ├── scripts/              → bootstrap.ps1 / bootstrap.sh
 ├── kit.json              → lista completa de skills e plugins com as origens
 └── .claude-plugin/       → torna este repositório instalável como marketplace

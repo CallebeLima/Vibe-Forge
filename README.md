@@ -143,7 +143,17 @@ Skills for projects that use Supabase: login/auth, row-level security (RLS), mig
 </details>
 
 <details>
-<summary><b>📄 Templates</b> — what gets copied into your project</summary>
+<summary><b>📄 Templates</b> — what gets copied into your project (3 variants)</summary>
+
+The `new-project-from-kit` skill picks one for you:
+
+| Variant | For |
+|---|---|
+| `python-nextjs` | Python/FastAPI API + Next.js frontend |
+| `vite-react` | Vite + React + TypeScript frontend |
+| `minimal` | any other stack (generic rules) |
+
+Each one contains:
 
 - `CLAUDE.md` — project rules: architecture, "answer concisely", "ask before changing more than 3 files"
 - `settings.json` — blocks reading/editing `.env`, `workspace/`, `.venv/`; asks before `git push`, `rm` and installs
@@ -166,7 +176,7 @@ Skills for projects that use Supabase: login/auth, row-level security (RLS), mig
 
 ## Safety built in
 
-`templates/settings.json` blocks Claude from reading or editing your `.env`, `workspace/` and `.venv/`, and asks before `git push`, `rm` and installs. Your secrets stay yours.
+Every template's `settings.json` blocks Claude from reading or editing your `.env` (the Python variant also blocks `workspace/` and `.venv/`), and asks before `git push`, `rm` and installs. Your secrets stay yours.
 
 ## Common problems
 
@@ -182,7 +192,7 @@ Skills for projects that use Supabase: login/auth, row-level security (RLS), mig
 ```
 vibe-forge/
 ├── plugins/vibe-forge/   → the plugin (skills + /vibe-forge:bootstrap)
-├── templates/            → CLAUDE.md, settings.json, .gitignore, hook example
+├── templates/            → 3 variants: python-nextjs, vite-react, minimal
 ├── scripts/              → bootstrap.ps1 / bootstrap.sh
 ├── kit.json              → full list of skills & plugins with their sources
 └── .claude-plugin/       → makes this repo installable as a marketplace
