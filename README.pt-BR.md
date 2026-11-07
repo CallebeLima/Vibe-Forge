@@ -87,6 +87,70 @@ No Claude Code:
 - `/skills` → deve listar as skills acima
 - `/plugin` → deve listar `oh-my-claudecode`, `chrome-devtools-mcp` e `vibe-forge`
 
+## O que cada peça faz (clique para expandir)
+
+<details>
+<summary><b>🧠 oh-my-claudecode (OMC)</b> — o time de IA</summary>
+
+Um plugin que dá ao Claude um time de **agentes** especialistas e um comando de planejamento. Em vez de um generalista fazer tudo, o Claude passa cada tarefa para o especialista certo:
+
+- `architect` — planeja e revisa a estrutura (só leitura, nunca edita seu código)
+- `executor` — escreve o código
+- `designer` — monta a interface
+- `test-engineer` — escreve e roda testes
+- `security-reviewer` — procura vulnerabilidades
+- `document-specialist` — produto, preço e documentação
+
+Também adiciona o `/oh-my-claudecode:plan` para planejar uma funcionalidade antes de construir.
+</details>
+
+<details>
+<summary><b>🎨 frontend-design</b> — front-end que não parece genérico</summary>
+
+Uma skill que faz o Claude tomar decisões de design com intenção (tipografia, cores, layout) em vez do visual padrão "cara de template de IA". Usada quando você pede páginas, componentes ou um visual novo.
+</details>
+
+<details>
+<summary><b>🧪 webapp-testing</b> — testa seu app como um usuário de verdade</summary>
+
+Uma skill que usa o Playwright para abrir seu app, clicar, tirar prints e ler os logs do navegador. Inclui um script que sobe seus servidores antes de testar.
+</details>
+
+<details>
+<summary><b>🌐 chrome-devtools-mcp</b> — o Claude vê seu app num navegador de verdade</summary>
+
+Um plugin que conecta o Claude ao Chrome DevTools: inspecionar a página, ler erros do console, ver requisições de rede e desempenho. A regra "a interface só está pronta depois de conferir no navegador" depende dele.
+</details>
+
+<details>
+<summary><b>🔒 owasp-security</b> — revisão de segurança</summary>
+
+Uma skill que confere o código contra o OWASP (a lista padrão de riscos de segurança web), incluindo riscos de apps com IA, como prompt injection. Ative com frases como "revisão de segurança" ou "isso é seguro para publicar?".
+</details>
+
+<details>
+<summary><b>🗄️ supabase + supabase-postgres-best-practices</b> — banco de dados (opcional)</summary>
+
+Skills para projetos que usam Supabase: login/autenticação, segurança por linha (RLS), migrations, edge functions, além de boas práticas de Postgres para desenho de tabelas, índices e consultas lentas. Só são instaladas com `WITH_SUPABASE=1`.
+</details>
+
+<details>
+<summary><b>🔥 vibe-forge (este plugin)</b> — a cola de tudo</summary>
+
+- `new-project-from-kit` — configura um projeto novo: copia as regras, as configurações seguras e o `.gitignore`
+- `agent-routing` — diz ao Claude qual agente e qual skill usar em cada tipo de tarefa
+- `/vibe-forge:bootstrap` — lista e instala tudo acima
+</details>
+
+<details>
+<summary><b>📄 Templates</b> — o que é copiado para o seu projeto</summary>
+
+- `CLAUDE.md` — regras do projeto: arquitetura, "responder de forma concisa", "perguntar antes de mudar mais de 3 arquivos"
+- `settings.json` — bloqueia leitura/edição de `.env`, `workspace/`, `.venv/`; pede confirmação antes de `git push`, `rm` e instalações
+- trecho de `.gitignore` — mantém segredos e arquivos gerados fora do Git
+- `hooks.example.json` — opcional: roda o `ruff` depois que o Claude edita arquivos Python
+</details>
+
 ## O "time de IA" (agentes)
 
 | Quando você quer... | O Claude usa | Skill que ajuda |
