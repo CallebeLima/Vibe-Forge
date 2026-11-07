@@ -19,6 +19,15 @@ $omc = if ($env:OMC_MARKETPLACE_REPO) { $env:OMC_MARKETPLACE_REPO } else { "Yeac
 claude plugin marketplace add $omc
 claude plugin install oh-my-claudecode@omc
 
+claude plugin marketplace add cathrynlavery/diagram-design
+claude plugin install diagram-design@diagram-design
+
+if ($env:WITH_GRAPHIFY -eq "1") {
+  Write-Host "== Graphify (precisa de Python 3.10+) =="
+  python -m pip install graphifyy
+  graphify install --project
+}
+
 claude plugin marketplace add CallebeLima/Vibe-Forge
 claude plugin install vibe-forge@vibe-forge
 

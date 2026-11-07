@@ -19,6 +19,15 @@ claude plugin install chrome-devtools-mcp@chrome-devtools-plugins
 claude plugin marketplace add "${OMC_MARKETPLACE_REPO:-Yeachan-Heo/oh-my-claudecode}"
 claude plugin install oh-my-claudecode@omc
 
+claude plugin marketplace add cathrynlavery/diagram-design
+claude plugin install diagram-design@diagram-design
+
+if [ "${WITH_GRAPHIFY:-0}" = "1" ]; then
+  echo "== Graphify (precisa de Python 3.10+) =="
+  python3 -m pip install graphifyy
+  graphify install --project
+fi
+
 claude plugin marketplace add CallebeLima/Vibe-Forge
 claude plugin install vibe-forge@vibe-forge
 

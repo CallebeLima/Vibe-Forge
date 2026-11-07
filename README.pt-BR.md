@@ -52,13 +52,13 @@ irm https://raw.githubusercontent.com/CallebeLima/Vibe-Forge/main/scripts/bootst
 curl -fsSL https://raw.githubusercontent.com/CallebeLima/Vibe-Forge/main/scripts/bootstrap.sh | bash
 ```
 
-Vai usar Supabase? Rode isto **antes** do comando acima:
-- PowerShell: `$env:WITH_SUPABASE = "1"`
-- Mac/Linux: `export WITH_SUPABASE=1`
+Quer os extras opcionais? Rode isto **antes** do comando acima (só o que você precisar):
+- Skills do Supabase: PowerShell `$env:WITH_SUPABASE = "1"` · Mac/Linux `export WITH_SUPABASE=1`
+- Graphify (precisa de Python 3.10+): PowerShell `$env:WITH_GRAPHIFY = "1"` · Mac/Linux `export WITH_GRAPHIFY=1`
 
 **O que é instalado:**
 - Skills: `frontend-design`, `webapp-testing`, `owasp-security` (+ `supabase`, `supabase-postgres-best-practices` se ativado)
-- Plugins: `oh-my-claudecode` (os agentes), `chrome-devtools-mcp` (deixa o Claude testar seu app num navegador de verdade) e `vibe-forge` (este kit)
+- Plugins: `oh-my-claudecode` (os agentes), `diagram-design` (diagramas), `chrome-devtools-mcp` (deixa o Claude testar seu app num navegador de verdade) e `vibe-forge` (este kit)
 
 <details>
 <summary>🔍 Quer ler o script antes de rodar? (recomendado)</summary>
@@ -126,6 +126,18 @@ Um plugin que conecta o Claude ao Chrome DevTools: inspecionar a página, ler er
 <summary><b>🔒 owasp-security</b> — revisão de segurança</summary>
 
 Uma skill que confere o código contra o OWASP (a lista padrão de riscos de segurança web), incluindo riscos de apps com IA, como prompt injection. Ative com frases como "revisão de segurança" ou "isso é seguro para publicar?".
+</details>
+
+<details>
+<summary><b>📊 diagram-design</b> — diagramas a partir de uma frase</summary>
+
+Um plugin (de `cathrynlavery`, licença MIT) que faz o Claude desenhar diagramas limpos em um único arquivo HTML com SVG: arquitetura, fluxograma, sequência, máquina de estados, esquema de banco (ER), linha do tempo e muitos outros. Experimente: *"Faça um diagrama de arquitetura do meu app: frontend, backend, banco de dados."*
+</details>
+
+<details>
+<summary><b>🕸️ graphify</b> — um mapa do seu código (opcional)</summary>
+
+Transforma seu projeto (código, documentos, PDFs) em um grafo de conhecimento, para o Claude consultar como as coisas se conectam em vez de reler todos os arquivos. Cria uma pasta `graphify-out/` com um `graph.html` interativo e um resumo `GRAPH_REPORT.md`. Precisa de Python 3.10+. Não vem por padrão porque também edita o `CLAUDE.md` e o `settings.json` do projeto (adiciona um hook). Instale com `WITH_GRAPHIFY=1` e rode `/graphify .` no Claude Code (no PowerShell, `graphify .`).
 </details>
 
 <details>
