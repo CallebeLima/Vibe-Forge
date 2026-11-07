@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pytest *)",
+      "Bash(.venv/Scripts/pytest *)",
+      "Bash(.venv/bin/pytest *)",
+      "Bash(git status)",
+      "Bash(git diff *)"
+    ],
+    "ask": [
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git reset *)",
+      "Bash(git checkout -- *)",
+      "Bash(git clean *)",
+      "Bash(rm *)",
+      "Bash(pip install *)",
+      "Bash(npm install *)"
+    ],
+    "deny": [
+      "Edit(./.env)",
+      "Write(./.env)",
+      "Edit(./workspace/**)",
+      "Write(./workspace/**)",
+      "Read(./.env)",
+      "Read(./workspace/**)",
+      "Read(./.venv/**)",
+      "Read(./**/__pycache__/**)",
+      "Bash(rm -rf *)",
+      "Bash(git push --force *)"
+    ]
+  },
+  "enabledPlugins": {
+    "oh-my-claudecode@omc": true,
+    "chrome-devtools-mcp@chrome-devtools-plugins": true
+  }
+}

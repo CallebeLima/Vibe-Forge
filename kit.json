@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "skills": [
+    { "name": "frontend-design", "source": "anthropics/skills", "install": "npx skills add anthropics/skills --skill frontend-design --agent claude-code" },
+    { "name": "webapp-testing", "source": "anthropics/skills", "install": "npx skills add anthropics/skills --skill webapp-testing --agent claude-code" },
+    { "name": "owasp-security", "source": "agamm/claude-code-owasp", "install": "npx skills add agamm/claude-code-owasp --skill owasp-security --agent claude-code" },
+    { "name": "supabase", "source": "supabase/agent-skills", "optional": true, "install": "npx skills add supabase/agent-skills --skill supabase --agent claude-code" },
+    { "name": "supabase-postgres-best-practices", "source": "supabase/agent-skills", "optional": true, "install": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --agent claude-code" }
+  ],
+  "plugins": [
+    { "name": "oh-my-claudecode", "marketplace": "omc", "marketplaceSource": "PREENCHER: repo do marketplace omc (ver ~/.claude/plugins/known_marketplaces.json)", "install": "claude plugin install oh-my-claudecode@omc" },
+    { "name": "chrome-devtools-mcp", "marketplace": "chrome-devtools-plugins", "marketplaceSource": "ChromeDevTools/chrome-devtools-mcp", "install": "claude plugin install chrome-devtools-mcp@chrome-devtools-plugins" },
+    { "name": "frontend-design", "marketplace": "claude-plugins-official", "note": "duplica a skill frontend-design; manter só um dos dois", "install": "claude plugin install frontend-design@claude-plugins-official" }
+  ],
+  "local_only_skills_origin_unknown": [
+    { "name": "diagram-design", "version": "2.6", "license": "MIT", "note": "não está no skills-lock.json; informar a origem e mover para a lista de skills" },
+    { "name": "graphify", "version": "0.9.103", "license": "desconhecida", "note": "não está no skills-lock.json; confirmar origem e licença antes de redistribuir" }
+  ],
+  "recommended_gaps": [
+    { "name": "superpowers", "type": "plugin", "marketplace": "obra/superpowers-marketplace", "why": "TDD, debugging sistemático, code review", "install": "claude plugin marketplace add obra/superpowers-marketplace && claude plugin install superpowers@superpowers-marketplace" },
+    { "name": "react-best-practices + web-design-guidelines", "type": "skill", "source": "vercel-labs/agent-skills", "why": "Next.js e auditoria de UI/acessibilidade", "install": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --agent claude-code" },
+    { "name": "remotion-best-practices", "type": "skill", "source": "remotion-dev/skills", "why": "só se gerar vídeo com Remotion", "optional": true, "install": "npx skills add remotion-dev/skills --skill remotion-best-practices --agent claude-code" },
+    { "name": "context7", "type": "mcp", "why": "documentação atual de Next 16, FastAPI etc.", "note": "confirmar comando de instalação na documentação oficial" },
+    { "name": "hooks ruff/mypy/pytest", "type": "config", "why": "hoje o settings.json não tem hooks", "note": "ver templates/hooks.example.json" }
+  ]
+}
