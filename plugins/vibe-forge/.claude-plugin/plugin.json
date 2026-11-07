@@ -1,8 +1,8 @@
 {
   "name": "vibe-forge",
-  "version": "0.1.0",
-  "description": "Base para novos projetos: cria projeto a partir dos templates, mapeia agentes OMC por área e instala skills/plugins de terceiros.",
+  "version": "0.2.0",
+  "description": "Sets up a new project from small, generic Claude Code templates (CLAUDE.md, safe settings, .gitignore).",
   "author": { "name": "Franco Lima" },
   "license": "MIT",
-  "keywords": ["scaffold", "agents", "bootstrap"]
+  "keywords": ["scaffold", "bootstrap", "templates"]
 }

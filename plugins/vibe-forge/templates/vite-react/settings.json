@@ -1,9 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pytest *)",
-      "Bash(.venv/Scripts/pytest *)",
-      "Bash(.venv/bin/pytest *)",
+      "Bash(npm run *)",
+      "Bash(npx tsc *)",
       "Bash(git status)",
       "Bash(git diff *)"
     ],
@@ -11,27 +10,32 @@
       "Bash(git commit *)",
       "Bash(git push *)",
       "Bash(git reset *)",
-      "Bash(git checkout -- *)",
       "Bash(git clean *)",
       "Bash(rm *)",
-      "Bash(pip install *)",
       "Bash(npm install *)"
     ],
     "deny": [
-      "Edit(./.env)",
-      "Write(./.env)",
-      "Edit(./workspace/**)",
-      "Write(./workspace/**)",
       "Read(./.env)",
-      "Read(./workspace/**)",
-      "Read(./.venv/**)",
-      "Read(./**/__pycache__/**)",
+      "Read(./.env.local)",
+      "Read(./.env.*.local)",
+      "Read(./.env.production)",
+      "Read(./node_modules/**)",
+      "Edit(./.env)",
+      "Edit(./.env.local)",
+      "Edit(./.env.*.local)",
+      "Edit(./.env.production)",
+      "Write(./.env)",
+      "Write(./.env.local)",
+      "Write(./.env.*.local)",
+      "Write(./.env.production)",
+      "Bash(cat .env)",
+      "Bash(cat .env.local)",
+      "Bash(cat .env.production)",
       "Bash(rm -rf *)",
       "Bash(git push --force *)"
     ]
   },
   "enabledPlugins": {
-    "oh-my-claudecode@omc": true,
     "chrome-devtools-mcp@chrome-devtools-plugins": true
   }
 }

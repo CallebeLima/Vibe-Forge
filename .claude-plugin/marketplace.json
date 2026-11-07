@@ -2,15 +2,15 @@
   "name": "vibe-forge",
   "owner": { "name": "Franco Lima" },
   "metadata": {
-    "description": "Base reutilizável para novos projetos: templates, mapa de agentes, bootstrap de skills e plugins."
+    "description": "Small starter kit for new Claude Code projects: templates and an installer for a few useful skills and plugins."
   },
   "plugins": [
     {
       "name": "vibe-forge",
       "source": "./plugins/vibe-forge",
-      "description": "Skills próprias (criar projeto a partir da base, roteamento de agentes) e comando /vibe-forge:bootstrap.",
-      "version": "0.1.0",
-      "keywords": ["scaffold", "agents", "bootstrap", "hexagonal", "fastapi", "nextjs"]
+      "description": "Sets up a new project from small, generic Claude Code templates (CLAUDE.md, safe settings, .gitignore).",
+      "version": "0.2.0",
+      "keywords": ["scaffold", "bootstrap", "templates"]
     }
   ]
 }
