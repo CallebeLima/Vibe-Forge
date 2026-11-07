@@ -7,21 +7,38 @@ $ErrorActionPreference = "Stop"
 if (-not $env:CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS) { $env:CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS = "300000" }
 
 $vfArt = @(
-  "  #   # ##### ####  #####    #####  ###  ####   #### #####",
-  "  #   #   #   #   # #        #     #   # #   # #     #    ",
-  "  #   #   #   ####  ####     ####  #   # ####  #  ## #### ",
-  "   # #    #   #   # #        #     #   # #  #  #   # #    ",
-  "    #   ##### ####  #####    #      ###  #   #  ###  #####"
+  "  ##      ##  ##########  ########    ##########",
+  "  ##+     ##+  +++##+++++ ##++++++##  ##+++++++++",
+  "  ##+     ##+     ##+     ######## ++ ########",
+  "   +##  ## ++     ##+     ##++++++##  ##+++++++",
+  "     +## ++   ##########  ######## ++ ##########",
+  "       ++      ++++++++++  ++++++++    ++++++++++",
+  "  ##########    ######    ########      ########  ##########",
+  "  ##+++++++++ ## +++++##  ##++++++##  ## ++++++++ ##+++++++++",
+  "  ########    ##+     ##+ ######## ++ ##+   ####  ########",
+  "  ##+++++++   ##+     ##+ ##++++##+   ##+    +##+ ##+++++++",
+  "  ##+          +###### ++ ##+    +##   +###### ++ ##########",
+  "   ++            ++++++    ++      ++    ++++++    ++++++++++"
 )
-$vfColors = @("Yellow", "DarkYellow", "Red", "Red", "DarkRed")   # amarelo -> laranja -> vermelho (brasa)
+# calor de cima para baixo: amarelo -> laranja -> vermelho; sombra em cinza
+$vfHeat = @("Yellow", "Yellow", "Yellow", "DarkYellow", "DarkYellow", "DarkYellow", "Red", "Red", "Red", "Red", "DarkRed", "DarkRed")
 $vfBlock = [string][char]0x2588
+$vfShade = [string][char]0x2591
 Write-Host ""
 for ($i = 0; $i -lt $vfArt.Count; $i++) {
-  Write-Host ($vfArt[$i].Replace("#", $vfBlock)) -ForegroundColor $vfColors[$i]
+  $row = $vfArt[$i]
+  for ($j = 0; $j -lt $row.Length; $j++) {
+    switch ($row[$j]) {
+      "#" { Write-Host -NoNewline $vfBlock -ForegroundColor $vfHeat[$i] }
+      "+" { Write-Host -NoNewline $vfShade -ForegroundColor DarkGray }
+      default { Write-Host -NoNewline " " }
+    }
+  }
+  Write-Host ""
 }
 Write-Host ""
-Write-Host "  Kit de projetos para Claude Code" -ForegroundColor Yellow
-Write-Host "  https://github.com/CallebeLima/Vibe-Forge" -ForegroundColor DarkYellow
+Write-Host "  Skills, plugins e agentes para o Claude Code, instalados de uma vez." -ForegroundColor Yellow
+Write-Host "  https://github.com/CallebeLima/Vibe-Forge" -ForegroundColor DarkGray
 Write-Host ""
 
 Write-Host "== Skills =="

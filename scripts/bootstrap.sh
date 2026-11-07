@@ -9,26 +9,48 @@ export CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS="${CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS:-3
 
 vf_banner() {
   local art=(
-    "  #   # ##### ####  #####    #####  ###  ####   #### #####"
-    "  #   #   #   #   # #        #     #   # #   # #     #    "
-    "  #   #   #   ####  ####     ####  #   # ####  #  ## #### "
-    "   # #    #   #   # #        #     #   # #  #  #   # #    "
-    "    #   ##### ####  #####    #      ###  #   #  ###  #####"
+    "  ##      ##  ##########  ########    ##########"
+    "  ##+     ##+  +++##+++++ ##++++++##  ##+++++++++"
+    "  ##+     ##+     ##+     ######## ++ ########"
+    "   +##  ## ++     ##+     ##++++++##  ##+++++++"
+    "     +## ++   ##########  ######## ++ ##########"
+    "       ++      ++++++++++  ++++++++    ++++++++++"
+    "  ##########    ######    ########      ########  ##########"
+    "  ##+++++++++ ## +++++##  ##++++++##  ## ++++++++ ##+++++++++"
+    "  ########    ##+     ##+ ######## ++ ##+   ####  ########"
+    "  ##+++++++   ##+     ##+ ##++++##+   ##+    +##+ ##+++++++"
+    "  ##+          +###### ++ ##+    +##   +###### ++ ##########"
+    "   ++            ++++++    ++      ++    ++++++    ++++++++++"
   )
-  local colors=(226 214 208 202 196)   # amarelo -> laranja -> vermelho (brasa)
-  local i line
+  # calor de cima para baixo: amarelo -> laranja -> vermelho; sombra em cinza escuro
+  local heat=(227 226 220 214 208 208 202 202 196 196 160 160) ash=238
+  local L S R="" i j row ch out
   echo ""
   for i in "${!art[@]}"; do
-    line="${art[$i]//\#/█}"
+    row="${art[$i]}"; out=""
     if [ -t 1 ] && [ -z "${NO_COLOR:-}" ]; then
-      printf '\033[38;5;%sm%s\033[0m\n' "${colors[$i]}" "$line"
+      L=$'\033[38;5;'"${heat[$i]:-160}"'m'; S=$'\033[38;5;'"$ash"'m'; R=$'\033[0m'
     else
-      echo "$line"
+      L=""; S=""; R=""
     fi
+    for ((j = 0; j < ${#row}; j++)); do
+      ch="${row:j:1}"
+      case "$ch" in
+        "#") out+="${L}█${R}" ;;
+        "+") out+="${S}░${R}" ;;
+        *)   out+=" " ;;
+      esac
+    done
+    printf '%s\n' "$out"
   done
   echo ""
-  echo "  Kit de projetos para Claude Code"
-  echo "  https://github.com/CallebeLima/Vibe-Forge"
+  if [ -t 1 ] && [ -z "${NO_COLOR:-}" ]; then
+    printf '  \033[38;5;214mSkills, plugins e agentes para o Claude Code, instalados de uma vez.\033[0m\n'
+    printf '  \033[38;5;244mhttps://github.com/CallebeLima/Vibe-Forge\033[0m\n'
+  else
+    echo "  Skills, plugins e agentes para o Claude Code, instalados de uma vez."
+    echo "  https://github.com/CallebeLima/Vibe-Forge"
+  fi
   echo ""
 }
 
