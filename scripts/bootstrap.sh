@@ -7,13 +7,32 @@ set -euo pipefail
 # Repositórios grandes (ex.: diagram-design) podem passar do timeout padrão de 120s
 export CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS="${CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS:-300000}"
 
-echo ""
-echo "=============================================="
-echo "  VIBE FORGE"
-echo "  Kit de projetos para Claude Code"
-echo "  https://github.com/CallebeLima/Vibe-Forge"
-echo "=============================================="
-echo ""
+vf_banner() {
+  local art=(
+    "  #   # ##### ####  #####    #####  ###  ####   #### #####"
+    "  #   #   #   #   # #        #     #   # #   # #     #    "
+    "  #   #   #   ####  ####     ####  #   # ####  #  ## #### "
+    "   # #    #   #   # #        #     #   # #  #  #   # #    "
+    "    #   ##### ####  #####    #      ###  #   #  ###  #####"
+  )
+  local colors=(226 214 208 202 196)   # amarelo -> laranja -> vermelho (brasa)
+  local i line
+  echo ""
+  for i in "${!art[@]}"; do
+    line="${art[$i]//\#/█}"
+    if [ -t 1 ] && [ -z "${NO_COLOR:-}" ]; then
+      printf '\033[38;5;%sm%s\033[0m\n' "${colors[$i]}" "$line"
+    else
+      echo "$line"
+    fi
+  done
+  echo ""
+  echo "  Kit de projetos para Claude Code"
+  echo "  https://github.com/CallebeLima/Vibe-Forge"
+  echo ""
+}
+
+vf_banner
 
 echo "== Skills =="
 npx skills add anthropics/skills --skill frontend-design --agent claude-code

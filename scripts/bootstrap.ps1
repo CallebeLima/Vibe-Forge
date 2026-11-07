@@ -6,12 +6,22 @@ $ErrorActionPreference = "Stop"
 # Repositórios grandes (ex.: diagram-design) podem passar do timeout padrão de 120s
 if (-not $env:CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS) { $env:CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS = "300000" }
 
+$vfArt = @(
+  "  #   # ##### ####  #####    #####  ###  ####   #### #####",
+  "  #   #   #   #   # #        #     #   # #   # #     #    ",
+  "  #   #   #   ####  ####     ####  #   # ####  #  ## #### ",
+  "   # #    #   #   # #        #     #   # #  #  #   # #    ",
+  "    #   ##### ####  #####    #      ###  #   #  ###  #####"
+)
+$vfColors = @("Yellow", "DarkYellow", "Red", "Red", "DarkRed")   # amarelo -> laranja -> vermelho (brasa)
+$vfBlock = [string][char]0x2588
 Write-Host ""
-Write-Host "=============================================="
-Write-Host "  VIBE FORGE"
-Write-Host "  Kit de projetos para Claude Code"
-Write-Host "  https://github.com/CallebeLima/Vibe-Forge"
-Write-Host "=============================================="
+for ($i = 0; $i -lt $vfArt.Count; $i++) {
+  Write-Host ($vfArt[$i].Replace("#", $vfBlock)) -ForegroundColor $vfColors[$i]
+}
+Write-Host ""
+Write-Host "  Kit de projetos para Claude Code" -ForegroundColor Yellow
+Write-Host "  https://github.com/CallebeLima/Vibe-Forge" -ForegroundColor DarkYellow
 Write-Host ""
 
 Write-Host "== Skills =="
