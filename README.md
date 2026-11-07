@@ -52,13 +52,19 @@ irm https://raw.githubusercontent.com/CallebeLima/Vibe-Forge/main/scripts/bootst
 curl -fsSL https://raw.githubusercontent.com/CallebeLima/Vibe-Forge/main/scripts/bootstrap.sh | bash
 ```
 
-Want the optional extras? Run these **before** the command above (only the ones you need):
-- Supabase skills: PowerShell `$env:WITH_SUPABASE = "1"` · Mac/Linux `export WITH_SUPABASE=1`
-- Graphify (needs Python 3.10+): PowerShell `$env:WITH_GRAPHIFY = "1"` · Mac/Linux `export WITH_GRAPHIFY=1`
+The installer is **interactive**. It shows a checklist in two steps and installs only after you confirm:
 
-**What gets installed:**
-- Skills: `frontend-design`, `webapp-testing`, `owasp-security` (+ `supabase`, `supabase-postgres-best-practices` if enabled)
+1. **Core tools** — pre-ticked with what most projects need. Each item has a short description (in English). Type `m 3` to open item 3's project page in your browser and read more.
+2. **Recommended extras** — depend on your project. Tick the Vercel skills if you use Next.js/React or have a web interface, and the Remotion skill only if you make videos with Remotion.
+
+Controls: type numbers to tick/untick (`1 3`), `a` = all, `n` = none, `m N` = read more, Enter = continue.
+
+Want to skip the questions? Set `VIBE_FORGE_YES=1` to install the pre-ticked items. Pre-tick optional ones with `WITH_SUPABASE=1`, `WITH_GRAPHIFY=1`, `WITH_NEXTJS=1`, `WITH_REMOTION=1` (PowerShell: `$env:NAME = "1"` · Mac/Linux: `export NAME=1`).
+
+**What can be installed:**
+- Skills: `frontend-design`, `webapp-testing`, `owasp-security` (+ `supabase`, `supabase-postgres-best-practices`)
 - Plugins: `oh-my-claudecode` (the agents), `diagram-design` (diagrams), `chrome-devtools-mcp` (lets Claude test your app in a real browser) and `vibe-forge` (this kit)
+- Tool: `graphify` (needs Python 3.10+)
 
 <details>
 <summary>🔍 Want to read the script before running it? (recommended)</summary>
@@ -137,13 +143,13 @@ A plugin (by `cathrynlavery`, MIT license) that makes Claude draw clean diagrams
 <details>
 <summary><b>🕸️ graphify</b> — a map of your codebase (optional)</summary>
 
-Turns your project (code, docs, PDFs) into a knowledge graph so Claude can look up how things connect instead of re-reading every file. Creates a `graphify-out/` folder with an interactive `graph.html` and a `GRAPH_REPORT.md` summary. Needs Python 3.10+. Not installed by default because it also edits your project's `CLAUDE.md` and `settings.json` (it adds a hook). Install with `WITH_GRAPHIFY=1`, then run `/graphify .` in Claude Code (in PowerShell, `graphify .`).
+Turns your project (code, docs, PDFs) into a knowledge graph so Claude can look up how things connect instead of re-reading every file. Creates a `graphify-out/` folder with an interactive `graph.html` and a `GRAPH_REPORT.md` summary. Needs Python 3.10+. Not installed by default because it also edits your project's `CLAUDE.md` and `settings.json` (it adds a hook). Tick it in the installer (or set `WITH_GRAPHIFY=1`), then run `/graphify .` in Claude Code (in PowerShell, `graphify .`).
 </details>
 
 <details>
 <summary><b>🗄️ supabase + supabase-postgres-best-practices</b> — database (optional)</summary>
 
-Skills for projects that use Supabase: login/auth, row-level security (RLS), migrations, edge functions, plus Postgres best practices for table design, indexes and slow queries. Only installed with `WITH_SUPABASE=1`.
+Skills for projects that use Supabase: login/auth, row-level security (RLS), migrations, edge functions, plus Postgres best practices for table design, indexes and slow queries. Only installed if you tick it (or set `WITH_SUPABASE=1`).
 </details>
 
 <details>
@@ -211,18 +217,20 @@ vibe-forge/
 └── .claude-plugin/       → makes this repo installable as a marketplace
 ```
 
-## Recommended extras (not installed by default)
+## Recommended extras (step 2 of the installer)
 
-Install only what your project uses. Run these in your project folder (needs Node.js), then restart Claude Code and check with `/skills`.
+The installer asks about these after the core tools, because they only make sense for some projects:
 
-**Next.js projects** — React/Next.js performance + UI/accessibility audit (`vercel-labs/agent-skills`):
+| Extra | Pick it if… |
+|---|---|
+| `vercel-react-best-practices` | your project uses **Next.js or React** (performance rules from Vercel) |
+| `web-design-guidelines` | your project has **a web interface** (audits accessibility and design) |
+| `remotion-best-practices` | you make **videos with Remotion** |
+
+Prefer to install them by hand? Run in your project folder, then restart Claude Code and check with `/skills`:
 ```
 npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --agent claude-code
 npx skills add vercel-labs/agent-skills --skill web-design-guidelines --agent claude-code
-```
-
-**Video with Remotion** (`remotion-dev/skills`):
-```
 npx skills add remotion-dev/skills --skill remotion-best-practices --agent claude-code
 ```
 

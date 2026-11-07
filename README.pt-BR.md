@@ -52,13 +52,19 @@ irm https://raw.githubusercontent.com/CallebeLima/Vibe-Forge/main/scripts/bootst
 curl -fsSL https://raw.githubusercontent.com/CallebeLima/Vibe-Forge/main/scripts/bootstrap.sh | bash
 ```
 
-Quer os extras opcionais? Rode isto **antes** do comando acima (só o que você precisar):
-- Skills do Supabase: PowerShell `$env:WITH_SUPABASE = "1"` · Mac/Linux `export WITH_SUPABASE=1`
-- Graphify (precisa de Python 3.10+): PowerShell `$env:WITH_GRAPHIFY = "1"` · Mac/Linux `export WITH_GRAPHIFY=1`
+O instalador é **interativo**. Ele mostra uma lista de marcação em duas etapas e só instala depois que você confirmar:
 
-**O que é instalado:**
-- Skills: `frontend-design`, `webapp-testing`, `owasp-security` (+ `supabase`, `supabase-postgres-best-practices` se ativado)
+1. **Ferramentas principais** — já marcadas com o que a maioria dos projetos precisa. Cada item tem uma descrição curta (em inglês). Digite `m 3` para abrir a página do projeto do item 3 no navegador e ler mais.
+2. **Extras recomendados** — dependem do seu projeto. Marque as skills da Vercel se usa Next.js/React ou tem interface web, e a do Remotion só se faz vídeos com Remotion.
+
+Comandos: digite números para marcar/desmarcar (`1 3`), `a` = todos, `n` = nenhum, `m N` = saber mais, Enter = continuar.
+
+Quer pular as perguntas? Use `VIBE_FORGE_YES=1` para instalar os itens já marcados. Pré-marque opcionais com `WITH_SUPABASE=1`, `WITH_GRAPHIFY=1`, `WITH_NEXTJS=1`, `WITH_REMOTION=1` (PowerShell: `$env:NOME = "1"` · Mac/Linux: `export NOME=1`).
+
+**O que pode ser instalado:**
+- Skills: `frontend-design`, `webapp-testing`, `owasp-security` (+ `supabase`, `supabase-postgres-best-practices`)
 - Plugins: `oh-my-claudecode` (os agentes), `diagram-design` (diagramas), `chrome-devtools-mcp` (deixa o Claude testar seu app num navegador de verdade) e `vibe-forge` (este kit)
+- Ferramenta: `graphify` (precisa de Python 3.10+)
 
 <details>
 <summary>🔍 Quer ler o script antes de rodar? (recomendado)</summary>
@@ -137,13 +143,13 @@ Um plugin (de `cathrynlavery`, licença MIT) que faz o Claude desenhar diagramas
 <details>
 <summary><b>🕸️ graphify</b> — um mapa do seu código (opcional)</summary>
 
-Transforma seu projeto (código, documentos, PDFs) em um grafo de conhecimento, para o Claude consultar como as coisas se conectam em vez de reler todos os arquivos. Cria uma pasta `graphify-out/` com um `graph.html` interativo e um resumo `GRAPH_REPORT.md`. Precisa de Python 3.10+. Não vem por padrão porque também edita o `CLAUDE.md` e o `settings.json` do projeto (adiciona um hook). Instale com `WITH_GRAPHIFY=1` e rode `/graphify .` no Claude Code (no PowerShell, `graphify .`).
+Transforma seu projeto (código, documentos, PDFs) em um grafo de conhecimento, para o Claude consultar como as coisas se conectam em vez de reler todos os arquivos. Cria uma pasta `graphify-out/` com um `graph.html` interativo e um resumo `GRAPH_REPORT.md`. Precisa de Python 3.10+. Não vem por padrão porque também edita o `CLAUDE.md` e o `settings.json` do projeto (adiciona um hook). Marque no instalador (ou use `WITH_GRAPHIFY=1`) e rode `/graphify .` no Claude Code (no PowerShell, `graphify .`).
 </details>
 
 <details>
 <summary><b>🗄️ supabase + supabase-postgres-best-practices</b> — banco de dados (opcional)</summary>
 
-Skills para projetos que usam Supabase: login/autenticação, segurança por linha (RLS), migrations, edge functions, além de boas práticas de Postgres para desenho de tabelas, índices e consultas lentas. Só são instaladas com `WITH_SUPABASE=1`.
+Skills para projetos que usam Supabase: login/autenticação, segurança por linha (RLS), migrations, edge functions, além de boas práticas de Postgres para desenho de tabelas, índices e consultas lentas. Só são instaladas se você marcar (ou usar `WITH_SUPABASE=1`).
 </details>
 
 <details>
@@ -211,22 +217,24 @@ vibe-forge/
 └── .claude-plugin/       → torna este repositório instalável como marketplace
 ```
 
-## Extras recomendados (não instalados por padrão)
+## Extras recomendados (etapa 2 do instalador)
 
-Instale só o que seu projeto usa. Rode na pasta do projeto (precisa do Node.js), reinicie o Claude Code e confira com `/skills`.
+O instalador pergunta sobre estes depois das ferramentas principais, porque só fazem sentido em alguns projetos:
 
-**Projetos Next.js** — performance de React/Next.js + auditoria de UI e acessibilidade (`vercel-labs/agent-skills`):
+| Extra | Marque se… |
+|---|---|
+| `vercel-react-best-practices` | seu projeto usa **Next.js ou React** (regras de performance da Vercel) |
+| `web-design-guidelines` | seu projeto tem **interface web** (audita acessibilidade e design) |
+| `remotion-best-practices` | você faz **vídeos com Remotion** |
+
+Prefere instalar na mão? Rode na pasta do projeto, reinicie o Claude Code e confira com `/skills`:
 ```
 npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --agent claude-code
 npx skills add vercel-labs/agent-skills --skill web-design-guidelines --agent claude-code
-```
-
-**Vídeo com Remotion** (`remotion-dev/skills`):
-```
 npx skills add remotion-dev/skills --skill remotion-best-practices --agent claude-code
 ```
 
-> Esses comandos vêm da documentação pública de cada projeto e ainda não foram testados com este kit.
+> Esses comandos vêm da documentação pública de cada projeto e não foram testados com este kit.
 
 ## Créditos e observações
 
