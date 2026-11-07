@@ -6,6 +6,14 @@ $ErrorActionPreference = "Stop"
 # Repositórios grandes (ex.: diagram-design) podem passar do timeout padrão de 120s
 if (-not $env:CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS) { $env:CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS = "300000" }
 
+Write-Host ""
+Write-Host "=============================================="
+Write-Host "  VIBE FORGE"
+Write-Host "  Kit de projetos para Claude Code"
+Write-Host "  https://github.com/CallebeLima/Vibe-Forge"
+Write-Host "=============================================="
+Write-Host ""
+
 Write-Host "== Skills =="
 npx skills add anthropics/skills --skill frontend-design --agent claude-code
 npx skills add anthropics/skills --skill webapp-testing --agent claude-code

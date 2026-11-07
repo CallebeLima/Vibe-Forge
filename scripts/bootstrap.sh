@@ -7,6 +7,14 @@ set -euo pipefail
 # Repositórios grandes (ex.: diagram-design) podem passar do timeout padrão de 120s
 export CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS="${CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS:-300000}"
 
+echo ""
+echo "=============================================="
+echo "  VIBE FORGE"
+echo "  Kit de projetos para Claude Code"
+echo "  https://github.com/CallebeLima/Vibe-Forge"
+echo "=============================================="
+echo ""
+
 echo "== Skills =="
 npx skills add anthropics/skills --skill frontend-design --agent claude-code
 npx skills add anthropics/skills --skill webapp-testing --agent claude-code
