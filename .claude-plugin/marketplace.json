@@ -1,14 +1,14 @@
 {
-  "name": "claude-project-kit",
+  "name": "vibe-forge",
   "owner": { "name": "Franco Lima" },
   "metadata": {
     "description": "Base reutilizável para novos projetos: templates, mapa de agentes, bootstrap de skills e plugins."
   },
   "plugins": [
     {
-      "name": "project-kit",
-      "source": "./plugins/project-kit",
-      "description": "Skills próprias (criar projeto a partir da base, roteamento de agentes) e comando /project-kit:bootstrap.",
+      "name": "vibe-forge",
+      "source": "./plugins/vibe-forge",
+      "description": "Skills próprias (criar projeto a partir da base, roteamento de agentes) e comando /vibe-forge:bootstrap.",
       "version": "0.1.0",
       "keywords": ["scaffold", "agents", "bootstrap", "hexagonal", "fastapi", "nextjs"]
     }

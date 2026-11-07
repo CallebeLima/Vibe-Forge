@@ -1,5 +1,5 @@
 {
-  "name": "project-kit",
+  "name": "vibe-forge",
   "version": "0.1.0",
   "description": "Base para novos projetos: cria projeto a partir dos templates, mapeia agentes OMC por área e instala skills/plugins de terceiros.",
   "author": { "name": "Franco Lima" },
